@@ -1,0 +1,27 @@
+.navbar {
+    width: 100%;
+    background-color: #337ab7;
+    border-radius: 0;
+    border: 1px solid #ffffff;
+}
+.navbar-inverse .navbar-nav > .active > a{
+    background-color: #337ab7;
+}
+.navbar-inverse .navbar-nav > li > a{
+    color: #ffffff;
+}
+.navbar-nav > li > a{
+    padding-right: 30px;
+}
+.connect{
+    color: white;
+    margin-top: 15px;
+    font-size: 1em;
+}
+
+.navbar-inverse .navbar-nav > .active > a:hover{
+    background-color: #21527e;
+}
+.navbar-inverse .navbar-nav > li > a:hover{
+    background-color: #21527e;
+}
