@@ -1,0 +1,106 @@
+<?php
+session_start();
+    require_once '../classes/ConnexionDB.php';
+    require_once '../classes/Requette.php';
+    require_once '../classes/Formulaire.php';
+    if(isset($_SESSION['email'])){
+      $session = $_SESSION['email'];
+    }
+    if(isset($_POST['submit'])){
+    $nom_service = $_POST['service'];
+    $donnees = ['nom_service'=>$nom_service];
+    $add = new Requette();
+    $res =  $add->insert($donnees,'services');
+    if($res){
+      header('location:services.php');
+    }else{
+        echo 'impossible';
+    }
+  }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
+  <link rel="stylesheet" href="../../css/menu.css">
+  <title>SERVICES</title>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="homeadmin.php">ACCUEIL</a></li>
+                <li><a href="secretariat.php">SECRETARIAT</a></li>
+                <li><a href="medecine.php">MEDECINE</a></li>
+                <li><a href="services.php">SERVICES</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+              <li class="connect"><?php if(isset( $session)){echo $session;}?></li>
+                <li><a href="deconnectadmin.php"><span class="glyphicon glyphicon-log-in"></span> DECONNEXION</a></li>
+              </ul>
+            </div>
+          </nav>
+<div class="container-fluid">
+  
+  <div class="panel-group col-md-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Ajouter un sécretaire</div>
+      <div class="panel-body">
+        <?php
+        if(isset($errormail)){echo $errormail;}
+        if(isset($errornumb)){echo $errornumb;}
+        if(isset($errochamp)){echo $errochamp;} 
+        ?>
+        <form action="" method="post">
+            <?php $forms = new Formulaire(); ?>
+            <div class="form-group">
+                <?=$forms->formInput('Nom du service','text','service','Entrez le nom du service').'<br>';?>
+            </div>
+            <?=$forms->formSubmit('submit','Enrégister');?>
+        </form>
+      </div>
+ 
+    </div>
+  </div>
+  <div class="panel-group col-md-8">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Ajouter un service</div>
+      <div class="panel-body">
+      <?php
+            $req = new Requette();
+            $res = $req->selectAll('services');
+            echo "
+            <table class=\"table\">
+            <thead class='thead-dark'>
+              <tr>
+                <th scope=\"col\">#</th>
+                <th scope=\"col\">Nom du service</th>
+                <th scope=\"col\">Actions</th>
+              </tr>
+            </thead>
+            ";
+            foreach($res as $val){
+                echo"<tbody>";
+                echo "<tr>
+                <td>".$val['id_service']."</td>
+                <td>".$val['nom_service']."</td>";
+                echo "
+                <td><a class='btn btn-primary'href='editservice.php?id=".$val['id_service']."'><em class=\"far fa-edit\"></em></a> 
+                    <a class='btn btn-danger' href='delservice.php?id=".$val['id_service']."'><em class=\"fas fa-trash-alt\"></em></a>
+                </td>";
+            }
+            echo "</tbody>";
+            echo "</table>";
+        ?>
+      </div>
+ 
+    </div>
+  </div>
+
+</body>
+</html>
