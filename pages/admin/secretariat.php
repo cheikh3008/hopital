@@ -13,23 +13,33 @@ if(isset($_POST['submit'])){
   $email = $_POST['email'];
   $mdp = sha1($_POST['mdp']);
   $service [] = $_POST['service'];
+  $req = new ConnexionDB();
+  $add = new Requette();
   if(!empty($prenom) && !empty($nom) && !empty($telephone) && !empty($email) && !empty($mdp) && !empty($service)){
       if(preg_match('#^(77||78||76||70)[0-9]{7}$#',  $telephone)){
+        
           if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $nbemail  = $req->connect()->prepare("SELECT COUNT(*) as nbemail FROM secretaire WHERE email = :email");
+            $nbemail->execute(array('email'=>$email));
+            while($email_verify = $nbemail->fetch()){
+              if($email_verify['nbemail'] != 0){
+                $errormailnb = "<p class=\"alert alert-danger \" role=\"alert\"> Cette adresse email existe déja. </p>";
+            }else{
               foreach ($service as $value) {
-              $value = intval($value);
-              $donnees = ['prenom'=>$prenom, 'nom'=>$nom, 'telephone'=>$telephone, 'email'=>$email, 'mdp'=>$mdp, 'prenom'=>$prenom,'id_service'=>$value];
-              $add = new Requette();
-              $res =  $add->insert($donnees,'secretaire');
-              if($res){
-                  header('location:secretariat.php');
-              }else{
-                  echo 'impossible';
-              }
-              
-              }
+                $value = intval($value);
+                $donnees = ['prenom'=>$prenom, 'nom'=>$nom, 'telephone'=>$telephone, 'email'=>$email, 'mdp'=>$mdp, 'prenom'=>$prenom,'id_service'=>$value];
+                $res =  $add->insert($donnees,'secretaire');
+                if($res){
+                    header('location:secretariat.php');
+                }else{
+                    echo 'impossible';
+                }
+                
+                }
+            }
+          }
           }else{
-              $errormail = "<p class=\alert alert-danger \ role=\alert\> Veuillez entrez une adresse email valide. </p>";
+              $errormail = "<p class=\"alert alert-danger \" role=\"alert\"> Veuillez entrez une adresse email valide. </p>";
           }
       }else{
           $errornumb = "<p class=\"alert alert-danger \" role=\"alert\"> Veuillez entrez un numéro de téléphone valide. </p>";
@@ -77,9 +87,11 @@ if(isset($_POST['submit'])){
       <form action="" method="post">
         <?php
         if(isset($errormail)){echo $errormail;}
+        if(isset($errormailnb)){echo $errormailnb;} 
         if(isset($errornumb)){echo $errornumb;}
         if(isset($errochamp)){echo $errochamp;} 
         ?>
+      
         <div class="form-group ">
             <?php
                 $forms = new Formulaire();
