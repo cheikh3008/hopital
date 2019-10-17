@@ -4,6 +4,7 @@ session_start();
     require_once '../classes/Requette.php';
     require_once '../classes/Formulaire.php';
     require_once '../classes/Menu.php';
+    $req = new ConnexionDB();
     if(isset($_SESSION['email'])){
       $session = $_SESSION['email'];
     }
@@ -18,20 +19,29 @@ session_start();
         if(!empty($prenom) && !empty($nom) && !empty($telephone) && !empty($email) && !empty($mdp) && !empty($service) && !empty($specialite)){
             if(preg_match('#^(77||78||76||70)[0-9]{7}$#',  $telephone)){
                 if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+                  $nbemail  = $req->connect()->prepare("SELECT COUNT(*) as nbemail FROM medecin WHERE email = :email");
+                  $nbemail->execute(array('email'=>$email));
+                  while($email_verify = $nbemail->fetch()){
+                    if($email_verify['nbemail'] != 0){
+                      $errormailnb = "<p class=\"alert alert-danger \" role=\"alert\"> Cette adresse email existe déja. </p>";
+                  }else{
                     foreach ($service as $value) {
-                    $value = intval($value);
-                    $donnees = ['prenom'=>$prenom, 'nom'=>$nom, 'telephone'=>$telephone, 'specialite'=>$specialite,'email'=>$email, 'mdp'=>$mdp, 'prenom'=>$prenom,'id_service'=>$value];
-                    $add = new Requette();
-                    $res =  $add->insert($donnees,'medecin');
-                    if($res){
-                       header('location:medecine.php');
-                    }else{
-                        echo 'impossible';
-                    }
-                    
-                    }
+                      $value = intval($value);
+                      $donnees = ['prenom'=>$prenom, 'nom'=>$nom, 'telephone'=>$telephone, 'specialite'=>$specialite,'email'=>$email, 'mdp'=>$mdp, 'prenom'=>$prenom,'id_service'=>$value];
+                      $add = new Requette();
+                      $res =  $add->insert($donnees,'medecin');
+                      if($res){
+                         header('location:medecine.php');
+                      }else{
+                          echo 'impossible';
+                      }
+                      
+                      }   
+                  }
+                }
+    
                 }else{
-                    $errormail = "<p class=\alert alert-danger \ role=\alert\> Veuillez entrez une adresse email valide. </p>";
+                    $errormail = "<p class=\alert alert-danger \ role=\alert\"> Veuillez entrez une adresse email valide. </p>";
                 }
             }else{
                 $errornumb = "<p class=\"alert alert-danger \" role=\"alert\"> Veuillez entrez un numéro de téléphone valide. </p>";
@@ -78,6 +88,7 @@ session_start();
       <div class="panel-body">
         <?php
         if(isset($errormail)){echo $errormail;}
+        if(isset($errormailnb)){echo $errormailnb;} 
         if(isset($errornumb)){echo $errornumb;}
         if(isset($errochamp)){echo $errochamp;} 
         ?>
