@@ -119,7 +119,7 @@ session_start();
          $req = new Requette();
          $res = $req->selectAll('medecin');
          echo "
-         <table class=\"table\">
+         <table class=\"table\" >
          <thead class='thead-dark'>
            <tr>
              <th scope=\"col\">#</th>
@@ -128,6 +128,7 @@ session_start();
              <th scope=\"col\">telephone</th>
              <th scope=\"col\">Specialite</th>
              <th scope=\"col\">Email</th>
+             <th scope=\"col\">Services</th>
              <th scope=\"col\">Actions</th>
            </tr>
          </thead>
@@ -140,7 +141,8 @@ session_start();
              <td>".$val['nom']."</td>
              <td>".$val['telephone']."</td>
              <td>".$val['specialite']."</td>
-             <td>".$val['email']."</td>";
+             <td>".$val['email']."</td>
+             <td>".$val['id_service']."</td>";
              echo "
              <td><a class='btn btn-primary'href='editmedecin.php?id=".$val['id_medecin']."'><em class=\"far fa-edit\"></em></a> 
                  <a class='btn btn-danger' href='delmedecin.php?id=".$val['id_medecin']."'><em class=\"fas fa-trash-alt\"></em></a>
