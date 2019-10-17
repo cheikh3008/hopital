@@ -60,4 +60,17 @@ class Requette extends ConnexionDB{
         return $result;
         
     }
+
+    public function verfifyemail($nomtable,$email){
+        $sql = "SELECT count(*) as nbemail FROM $nomtable WHERE email = :eamil";
+        $req = $this->connect()->prepare($sql);
+        $req->bindValue(':email', $email);
+        $req->execute(array($email));
+        while($email_verify  = $req->fetch()){
+            if(isset($email_verify['nbemail']) != 0){
+               echo 'Cette email est déja utlisé !';
+            }
+        }
+      
+    }
 }
