@@ -1,6 +1,6 @@
 <?php
 class ConnexionDB{
-    protected function connect(){
+    public function connect(){
 
         $servername = "localhost";
         $dbname = 'hopital';
