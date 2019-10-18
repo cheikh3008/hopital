@@ -10,8 +10,10 @@ class Requette extends ConnexionDB{
         if($res->rowCount() > 0){
             while($ligne  = $res->fetch()){
                 $d []= $ligne;
-
+                
             }
+        }else{
+            echo " La table est vide ";
         }
         return $d;
     }
@@ -61,16 +63,5 @@ class Requette extends ConnexionDB{
         
     }
 
-    public function verfifyemail($nomtable,$email){
-        $sql = "SELECT count(*) as nbemail FROM $nomtable WHERE email = :eamil";
-        $req = $this->connect()->prepare($sql);
-        $req->bindValue(':email', $email);
-        $req->execute(array($email));
-        while($email_verify  = $req->fetch()){
-            if(isset($email_verify['nbemail']) != 0){
-               echo 'Cette email est déja utlisé !';
-            }
-        }
-      
-    }
+   
 }
