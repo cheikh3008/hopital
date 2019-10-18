@@ -7,15 +7,24 @@ session_start();
       $session = $_SESSION['email'];
     }
     if(isset($_POST['submit'])){
-    $nom_service = $_POST['service'];
+    $nom_service =$_POST['service'];
     $donnees = ['nom_service'=>$nom_service];
     $add = new Requette();
-    $res =  $add->insert($donnees,'services');
+    $req = new ConnexionDB();
+    $d = $req->connect()->prepare("SELECT COUNT(*) as nbservices FROM services WHERE nom_service = :nom_service");
+    $d->execute(array('nom_service'=>$nom_service));
+    while($email_verify = $d->fetch()){
+      if($email_verify['nbservices'] != 0){
+        $errordoublon= "<p class=\"alert alert-danger \" role=\"alert\"> Ce nom de service existe déja. </p>";
+    }else{
+      $res =  $add->insert($donnees,'services');
     if($res){
       header('location:services.php');
     }else{
         echo 'impossible';
     }
+    }
+  }
   }
 ?>
 <!DOCTYPE html>
@@ -52,9 +61,7 @@ session_start();
       <div class="panel-heading">Ajouter un sécretaire</div>
       <div class="panel-body">
         <?php
-        if(isset($errormail)){echo $errormail;}
-        if(isset($errornumb)){echo $errornumb;}
-        if(isset($errochamp)){echo $errochamp;} 
+        if(isset($errordoublon)){echo $errordoublon;}
         ?>
         <form action="" method="post">
             <?php $forms = new Formulaire(); ?>
@@ -91,7 +98,7 @@ session_start();
                 <td>".$val['nom_service']."</td>";
                 echo "
                 <td><a class='btn btn-primary'href='editservice.php?id=".$val['id_service']."'><em class=\"far fa-edit\"></em></a> 
-                    <a class='btn btn-danger' href='delservice.php?id=".$val['id_service']."'><em class=\"fas fa-trash-alt\"></em></a>
+                    <a class='btn btn-danger' href='delservice.php?id=".$val['id_service']."' onclick=\"return confirm('êtes vous sure de vouloir supprimer cet enrégistrement ?')\";><em class=\"fas fa-trash-alt\"></em></a>
                 </td>";
             }
             echo "</tbody>";
