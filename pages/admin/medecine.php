@@ -156,7 +156,7 @@ session_start();
              <td>".$val['id_service']."</td>";
              echo "
              <td><a class='btn btn-primary'href='editmedecin.php?id=".$val['id_medecin']."'><em class=\"far fa-edit\"></em></a> 
-                 <a class='btn btn-danger' href='delmedecin.php?id=".$val['id_medecin']."'><em class=\"fas fa-trash-alt\"></em></a>
+                 <a class='btn btn-danger' href='delmedecin.php?id=".$val['id_medecin']."' onclick=\"return confirm('êtes vous sure de vouloir supprimer cet enrégistrement ?')\";><em class=\"fas fa-trash-alt\"></em></a>
              </td>";
          }
          echo "</tbody>";
