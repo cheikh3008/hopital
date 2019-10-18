@@ -6,8 +6,10 @@
         $id =$_GET['id'];
         $forms = new Requette();
         $result = $forms->selectOne('medecin','id_medecin',$id);
+        
+          echo $result['id_service'];
+        
        
-    
     }
 ?>
 <!DOCTYPE html>
@@ -50,31 +52,39 @@
         if(isset($errornumb)){echo $errornumb;}
         if(isset($errochamp)){echo $errochamp;} 
         ?>
-    <form action="" method="post">
-    <div class="form-group ">
-            <?php
-                $forms = new Formulaire();
-                $req = new Requette();
-                echo $forms->formInput('Prenom','text','prenom','Entrez le prénom',$result['prenom']);
-                echo $forms->formInput('Nom ','text','nom','Entrez le nom ',$result['nom']);
-                echo $forms->formInput('Telephone','tel','telephone','Entrez le numero de telephone',$result['telephone']);
-                echo $forms->formInput('Specialte','text','specialite','Entrez le specialte ',$result['specialite']);
-                echo $forms->formInput('Adresse email','email','email','Entrez le mot de passe',$result['email']);
-                $res = $req->selectAll('services');
-                $liste_option= "";
-                foreach ($res as $value) {
-
-                    $liste_option .= "<option value=".$value['id_service'].">" .$value['id_service'].' - '.$value['nom_service']."</option>";
-                }
-                echo $forms->selectList('Choisissez un service','service',$liste_option);
-            ?>
+        <form action="" method="post">
+        <div class="form-group ">
+        <div class="form-group ">
+          <label>prenom</label>
+          <input type="text" class="form-control col-md-2" name="prenom" value="<?php if($result['prenom']) {echo $result['prenom'];} ?>" >
         </div>
-
-        <?php echo $forms->formSubmit('submit','Enrégister'); ?>
-   
-    
-    </form>
+        <div class="form-group ">
+          <label>nom</label>
+          <input type="text" class="form-control col-md-2" name="nom" value="" >
+        </div>
+        <div class="form-group ">
+          <label>telephone</label>
+          <input type="text" class="form-control col-md-2" name="telephone" value="" >
+        </div>
+        <div class="form-group ">
+          <label>specialite</label>
+          <input type="text" class="form-control col-md-2" name="specialite" value="" >
+        </div>
+        <div class="form-group ">
+          <label>email</label>
+          <input type="text" class="form-control col-md-2" name="email" value="" >
+        </div>
+        
+        <div class="form-group">
+            <label >$label</label>
+            <select name="services" class="form-control col-md-4">
+                <option value='<?php if($result['id_service'] == $id) {echo 'selected';} ?>'></option>
+                <option value='<?php if($result['id_service'] == $id) {echo 'selected';} ?>'></option>
+                <option value='<?php if($result['id_service'] == $id) {echo 'selected';} ?>'></option>
+                <option value='<?php if($result['id_service'] == $id) {echo 'selected';} ?>'></option>
+            </select>
+        </div>
       </div>
- 
+      </form>  
     </div>
   </div>
