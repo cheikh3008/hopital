@@ -60,6 +60,7 @@ if(isset($_POST['submit'])){
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
   <link rel="stylesheet" href="../../css/menu.css">
+  <link rel="stylesheet" href="../../js/app.js">
   <title>SECRETARIAT</title>
 </head>
 <body>
@@ -154,7 +155,7 @@ if(isset($_POST['submit'])){
             <td>".$val['id_service']."</td>";
             echo "
             <td><a class='btn btn-primary' href='editsecretaire.php?id=".$val['id_secretaire']."'><em class=\"far fa-edit\"></em></a> 
-                <a class='btn btn-danger' href='delsecretaire.php?id=".$val['id_secretaire']."'><em class=\"fas fa-trash-alt\"></em></a>
+                <a class='btn btn-danger'  href='delsecretaire.php?id=".$val['id_secretaire']."' onclick=\"return confirm('êtes vous sure de vouloir supprimer cet enrégistrement ?')\";><em class=\"fas fa-trash-alt\"></em></a>
             </td>";
         }
         echo "</tbody>";
