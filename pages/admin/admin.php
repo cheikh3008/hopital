@@ -36,7 +36,7 @@ session_start();
           </div>
           <form class="col-12" action="" method="post">
             <div class="form-group"> <em class="fas fa-user fasi"></em>
-              <input  type="text" class="form-control" name="email" placeholder="Entrez votre email">
+              <input type="text" class="form-control" name="email" placeholder="Entrez votre email">
             </div>
             <div class="form-group"><em class="fas fa-lock fasi"></em>
               <input type="password" class="form-control" name="passwd" placeholder="Entrez votre mot de passe">
