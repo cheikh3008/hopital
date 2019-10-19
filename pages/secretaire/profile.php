@@ -6,6 +6,9 @@ session_start();
     require_once '../classes/Menu.php';
     $req = new ConnexionDB();
     $add = new Requette();
+    if(isset($_SESSION['id_secretaire'])){
+
+    
     if(isset($_POST['submit'])){
         $prenom = $_POST['prenom'];
         $nom = $_POST['nom'];
@@ -46,14 +49,19 @@ session_start();
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
   <link rel="stylesheet" href="../../css/menu.css">
-  <title>MEDECINE</title>
+  <title>PATIENT</title>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
             <div class="container-fluid">
               <ul class="nav navbar-nav">
                 <li><a href="">PATIENT</a></li>
-                <li><a href="rv.php">RENDEZ-VOUS</a></li>
+                <?php
+                    if(isset($_SESSION['id_secretaire'])){
+                        $s = $_SESSION['id_secretaire'];
+                  ?>
+                <li><a href='rv.php?id=<?php echo $s ;?>'>RENDEZ-VOUS</a>
+              </li> <?php } ?>
               </ul>
               <ul class="nav navbar-nav navbar-right">
               <li class="connect"><?php if(isset( $session)){echo $session;}?></li>
@@ -151,3 +159,6 @@ session_start();
 
 </body>
 </html>
+<?php
+}
+?>
