@@ -8,7 +8,9 @@ session_start();
         $req = new Requette();
         $result = $req->delete('patient','id_patient',$id);
         if($result){
-            header('location:profile.php?id='.$id);
+            if(isset($_SESSION['id_secretaire'])){
+                header('location:profile.php?id='.$_SESSION['id_secretaire']);
+            }
         }else{
             echo 'erreur de suppression';
         }
