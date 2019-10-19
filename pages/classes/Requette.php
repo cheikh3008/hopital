@@ -12,8 +12,6 @@ class Requette extends ConnexionDB{
                 $d []= $ligne;
                 
             }
-        }else{
-            echo " La table est vide ";
         }
         return $d;
     }
