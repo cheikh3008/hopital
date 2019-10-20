@@ -7,8 +7,6 @@ session_start();
     $req = new ConnexionDB();
     $add = new Requette();
     if(isset($_SESSION['id_secretaire'])){
-
-    
     if(isset($_POST['submit'])){
         $prenom = $_POST['prenom'];
         $nom = $_POST['nom'];
@@ -64,7 +62,7 @@ session_start();
               </li> <?php } ?>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-              <li class="connect"><?php if(isset( $session)){echo $session;}?></li>
+              <li class="connect"><?php if(isset( $_SESSION['prenom'])&& $_SESSION['prenom']){echo $_SESSION['prenom']." " .$_SESSION['nom'];}?></li>
                 <li><a href="deconnexion.php"><span class="glyphicon glyphicon-log-in"></span> DECONNEXION</a></li>
               </ul>
             </div>
@@ -73,7 +71,7 @@ session_start();
   
   <div class="panel-group col-md-4">
     <div class="panel panel-primary">
-      <div class="panel-heading">Ajouter un medecin</div>
+      <div class="panel-heading">AJOUTER UN PATIENT</div>
       <div class="panel-body">
         <?php
         if(isset($error_age)){echo $error_age;}
@@ -90,7 +88,7 @@ session_start();
             echo $forms->formInput('Age','text','age','Entrez l\'age');
             echo $forms->formInput('adresse','text','adresse','Entrez l\'adresse ');
             echo $forms->formInput('Telephone','tel','telephone','Entrez le numero ');
-            echo $forms->formInput('    ','hidden','secretaire','',$_GET['id']);
+            echo $forms->formInput('','hidden','secretaire','',$_GET['id']);
         ?>
     </div>
     
@@ -104,21 +102,16 @@ session_start();
   </div>
   <div class="panel-group col-md-8">
     <div class="panel panel-primary">
-      <div class="panel-heading">Ajouter un sécretaire</div>
+      <div class="panel-heading">LISTE DES PATIENT</div>
       <div class="panel-body">
        <!-- Liste des medecins -->
        <?php
        if(isset($_GET['id'])){
         $id =  $_GET['id']; 
         }
-        $req = new ConnexionDB();
-        $res = $req->connect()->prepare("SELECT * FROM patient WHERE id_secretaire  = ? ");
-        $res->execute(array($id));
-        if($res->rowCount() > 0){
-            while($ligne  = $res->fetch()){
-                $user []= $ligne;
-            }
-        }
+        $bdd = new ConnexionDB();
+        $req = new Requette();
+        $user = $req->selectWithCondition('patient','id_secretaire',$id);
          echo "
          <table class=\"table\" >
          <thead class='thead-dark'>
