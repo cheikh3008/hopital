@@ -60,6 +60,30 @@ class Requette extends ConnexionDB{
         return $result;
         
     }
+    public function selectWithCondition($nomtable,$nom_id_table,$id){
+        $res = $this->connect()->prepare("SELECT * FROM $nomtable WHERE $nom_id_table  = ? ");
+        $res->execute(array($id));
+        if($res->rowCount() > 0){
+            while($ligne  = $res->fetch()){
+                $user []= $ligne;
+            }
+        }
+        return $user;
+    }
 
+
+    public function selectAllCondition($table1,$table2,$table3,$cond1,$cond2,$cond3,$id){
+        $res = $this->connect()->prepare("SELECT DISTINCT  rendez_vous.num_rv ,patient.prenom,patient.nom,patient.age,patient.adresse,patient.telephone,rendez_vous.date,rendez_vous.heure_debut,rendez_vous.heure_fin FROM $table1,$table2,$table3 WHERE $cond1 = $cond2 AND $cond3 = ? ");
+        $res->execute(array($id));
+        if($res->rowCount() > 0){
+            while($ligne  = $res->fetch()){
+                $user []= $ligne;
+            }
+            return $user;
+        }else{
+            return 'la table est vide';
+        }
+       
+    }
    
 }
