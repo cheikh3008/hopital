@@ -47,7 +47,7 @@ session_start();
   
   <div class="panel-group col-md-4">
     <div class="panel panel-primary">
-      <div class="panel-heading">Ajouter un medecin</div>
+      <div class="panel-heading">DONNER UN RENDEZ-VOUS A UN PATIENT</div>
       <div class="panel-body">
         <?php
         if(isset($error_age)){echo $error_age;}
@@ -55,46 +55,101 @@ session_start();
         if(isset($error_numb)){echo $error_numb;}
         ?>
     <form action="" method="post">
-    <div class="form-group ">
-        <?php
-            $forms = new Formulaire();
-            $req = new Requette();
-            echo $forms->formInput('Date','date','dates','Entrez la date');
-            echo $forms->formInput('Heure début ','time','hdebut','');
-            echo $forms->formInput('Heure fin ','time','hfin','');
-            echo $forms->formInput('','hidden','secretaire','',$_GET['id']);
-            $res = $req->selectAll('plage_horaire');
-            $liste_option= "";
-            foreach ($res as $value) {
+        <div class="form-group ">
+            <?php
+                $forms = new Formulaire();
+                $req = new Requette();
+                echo $forms->formInput('Date','date','dates','Entrez la date');
+                echo $forms->formInput('Heure début ','time','hdebut','');
+                echo $forms->formInput('Heure fin ','time','hfin','');
+                echo $forms->formInput('','hidden','secretaire','',$_GET['id']);
+                $res = $req->selectAll('plage_horaire');
+                $liste_option= "";
+                foreach ($res as $value) {
 
-                $liste_option .= "<option value=".$value['id_horaire'].">" .$value['id_horaire'].' - '.$value['date']."</option>";
-            }
-            echo $forms->selectList('Choisissez une horaire','horaire',$liste_option);
-            $res = $req->selectAll('medecin');
-            $liste_option= "";
-            foreach ($res as $value) {
+                    $liste_option .= "<option value=".$value['id_horaire'].">" .$value['id_horaire'].' - '.$value['date']."</option>";
+                }
+                echo $forms->selectList('Choisissez une horaire','horaire',$liste_option);
+                $res = $req->selectAll('medecin');
+                $liste_option= "";
+                foreach ($res as $value) {
 
-                $liste_option .= "<option value=".$value['id_medecin'].">" .$value['id_medecin'].' - '.$value['prenom'].' - '.$value['nom']."</option>";
-            }
-            echo $forms->selectList('Choisissez un medecin','medecin',$liste_option);
-            $res = $req->selectAll('patient');
-            $liste_option= "";
-            foreach ($res as $value) {
+                    $liste_option .= "<option value=".$value['id_medecin'].">" .$value['id_medecin'].' - '.$value['prenom'].' - '.$value['nom']."</option>";
+                }
+                echo $forms->selectList('Choisissez un medecin','medecin',$liste_option);
+                $res = $req->selectWithCondition('patient','id_secretaire',$_GET['id']);
+                $liste_option= "";
+                foreach ($res as $value) {
 
-                $liste_option .= "<option value=".$value['id_patient'].">" .$value['id_patient'].' - '.$value['prenom'].' - '.$value['nom']."</option>";
-            }
-            echo $forms->selectList('Choisissez un patient','patient',$liste_option);
-        ?>
+                    $liste_option .= "<option value=".$value['id_patient'].">" .$value['id_patient'].' - '.$value['prenom'].' - '.$value['nom']."</option>";
+                }
+                echo $forms->selectList('Choisissez un patient','patient',$liste_option);
+            ?>
+            </div> 
+            <?php echo $forms->formSubmit('submit','Enrégister'); ?>
+        </form>
         </div>
-    
-        <?php echo $forms->formSubmit('submit','Enrégister'); ?>
-   
-    
-    </form>
+        </div>
+    </div>
+    <div class="panel-group col-md-8">
+    <div class="panel panel-primary">
+      <div class="panel-heading">LISTE DES PATIENT</div>
+      <div class="panel-body">
+       <!-- Liste des medecins -->
+       <?php
+       if(isset($_GET['id'])){
+        $id =  $_GET['id']; 
+        }
+        $bdd = new ConnexionDB();
+        $req = new Requette();
+        $user = $req->selectAllCondition('patient','rendez_vous','secretaire','rendez_vous.id_patient','patient.id_patient','rendez_vous.id_secretaire',$id);
+        
+         echo "
+         <table class=\"table\" >
+         <thead class='thead-dark'>
+           <tr>
+             <th scope=\"col\">Numéro rv</th>
+             <th scope=\"col\">Prenom</th>
+             <th scope=\"col\">Nom</th>
+             <th scope=\"col\">Age</th>
+             <th scope=\"col\">Adresse</th>
+             <th scope=\"col\">Telephone</th>
+             <th scope=\"col\">Date rv</th>
+             <th scope=\"col\">Heure debut</th>
+             <th scope=\"col\">Heure fin</th>
+             <th scope=\"col\">Actions</th>
+           </tr>
+         </thead>
+         ";
+        
+         foreach($user as $val){
+             echo"<tbody>";
+             echo "<tr>
+             <td>".$val['num_rv']."</td>
+             <td>".$val['prenom']."</td>
+             <td>".$val['nom']."</td>
+             <td>".$val['age']."</td>
+             <td>".$val['adresse']."</td>
+             <td>".$val['telephone']."</td>
+             <td>".$val['date']."</td>
+             <td>".$val['heure_debut']."</td>
+             <td>".$val['heure_fin']."</td>";
+             echo "
+             <td><a class='btn btn-primary'href='editrv.php?id=".$val['num_rv']."'><em class=\"far fa-edit\"></em></a> 
+                 <a class='btn btn-danger' href='delrv.php?id=".$val['num_rv']."' onclick=\"return confirm('êtes vous sure de vouloir supprimer cet enrégistrement ?')\";><em class=\"fas fa-trash-alt\"></em></a>
+             </td>";
+         }
+         echo "</tbody>";
+         echo "</table>";
+       
+        ?>
       </div>
  
     </div>
   </div>
+
+</body>
+</html>
 
 </body>
 </html>
