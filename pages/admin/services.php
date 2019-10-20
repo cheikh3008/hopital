@@ -58,7 +58,7 @@ session_start();
   
   <div class="panel-group col-md-4">
     <div class="panel panel-primary">
-      <div class="panel-heading">Ajouter un sécretaire</div>
+      <div class="panel-heading">AJOUTER UN SERVICE</div>
       <div class="panel-body">
         <?php
         if(isset($errordoublon)){echo $errordoublon;}
@@ -76,7 +76,7 @@ session_start();
   </div>
   <div class="panel-group col-md-8">
     <div class="panel panel-primary">
-      <div class="panel-heading">Ajouter un service</div>
+      <div class="panel-heading">LISTE DES SERVICES</div>
       <div class="panel-body">
       <?php
             $req = new Requette();
