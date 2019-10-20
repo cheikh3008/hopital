@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once '../classes/ConnexionDB.php';
+require_once '../classes/Requette.php';
+require_once '../classes/Formulaire.php';
 if (isset($_POST['submit'])) {
   if(!empty($_POST['email']) && !empty($_POST['mdp'])){
     $email=$_POST['email'];
@@ -16,14 +18,12 @@ if (isset($_POST['submit'])) {
       $_SESSION['nom'] = $infouser['nom'];
       header('location:profile.php?id='.$_SESSION['id_secretaire']);
     }else{
-      echo 'mot de passe ou email incorrect !';
+      $erreur_saisi = "<p class=\"alert alert-danger\"> Adresse email ou mot de passe incorrect! </p>";
     }
        
-       
-    
     
   }else{
-   $error = "<p class=\"alertalert-danger\"> Tous les champs doivent être remplis ! </p>";
+   $error = "<p class=\"alert alert-danger\"> Tous les champs doivent être remplis ! </p>";
   }
 }
 
@@ -45,17 +45,20 @@ if (isset($_POST['submit'])) {
       <div class="col-sm-8 main-section">
         <div class="modal-content">
           <div class="col-12 user-img" >
-            <img src="../../img/login.png" alt="">
+            <img src="../../img/users.png" alt="">
           </div>
           <form class="col-12" action="" method="post">
-            <div class="form-group"> <em class="fas fa-user fasi"></em>
-              <input  type="text" class="form-control" name="email" placeholder="Entrez votre email">
-            </div>
-            <div class="form-group"><em class="fas fa-lock fasi"></em>
-              <input type="password" class="form-control" name="mdp" placeholder="Entrez votre mot de passe">
-            </div>
-            <em class="fas fa-sign-in-alt"></em> <input type="submit" class="btn button" value="Connecter" name="submit">
+          <?php
+              $forms = new Formulaire();
+              echo $forms->inputEmail('email','email','Entrez votre adresse email');
+              echo $forms->inputPassword('password','mdp','Entrez votre mot de passe');
+              echo $forms->inputSubmit('submit','Se connecter');
+            ?>
           </form>
+          <?php
+            if(isset($error)){echo $error;}
+            if(isset($erreur_saisi)){echo $erreur_saisi;}
+          ?>
         </div> 
 
       </div>
