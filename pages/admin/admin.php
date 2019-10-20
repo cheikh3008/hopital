@@ -1,12 +1,15 @@
 <?php
 session_start();
+require_once '../classes/ConnexionDB.php';
+require_once '../classes/Requette.php';
+require_once '../classes/Formulaire.php';
   if(isset($_POST['submit'])){
-    if(empty($_POST['email']) && empty($_POST['passwd'])){
+    if(empty($_POST['email']) && empty($_POST['mdp'])){
       $errreur = '<p class="alert alert-danger">Tous les champs doivent être remplis.</p>';
     }else{
       $email = $_POST['email'];
-      $passwd = $_POST['passwd'];
-      if($email == 'admin@gmail.com' && $passwd == 'admin123') {
+      $mdp = $_POST['mdp'];
+      if($email == 'admin@gmail.com' && $mdp == 'admin123') {
         $_SESSION['email'] = $email;
         header('location:homeadmin.php');
       }else{
@@ -35,13 +38,12 @@ session_start();
             <img src="../../img/users.png" alt="user">
           </div>
           <form class="col-12" action="" method="post">
-            <div class="form-group"> <em class="fas fa-user fasi"></em>
-              <input type="text" class="form-control" name="email" placeholder="Entrez votre email">
-            </div>
-            <div class="form-group"><em class="fas fa-lock fasi"></em>
-              <input type="password" class="form-control" name="passwd" placeholder="Entrez votre mot de passe">
-            </div>
-            <em class="fas fa-sign-in-alt"></em> <input type="submit" class="btn button" value="Connecter" name="submit">
+            <?php
+              $forms = new Formulaire();
+              echo $forms->inputEmail('email','email','Entrez votre adresse email');
+              echo $forms->inputPassword('password','mdp','Entrez votre mot de passe');
+              echo $forms->inputSubmit('submit','Se connecter');
+            ?>
           </form>
         </div> 
         <div>
