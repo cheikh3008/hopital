@@ -46,7 +46,30 @@
                     </div>";
             }
            
-   
+            
+
+            public function inputEmail($type,$name,$placeholder){
+                return "
+                
+                <div class=\"form-group\"> <em class=\"fas fa-user fasi\"></em>
+                <input type=\"$type\" class=\"form-control\" name=\"$name\" placeholder=\"$placeholder\">
+                </div>
+                
+                ";
+            }
+            public function inputPassword($type,$name,$placeholder){
+                return "
+                <div class=\"form-group\"><em class=\"fas fa-lock fasi\"></em>
+                <input type=\"$type\" class=\"form-control\" name=\"$name\" placeholder=\"$placeholder\">
+                </div>
+               
+                ";
+            }
+            public function inputSubmit($name,$value){
+                return "
+                <em class=\"fas fa-sign-in-alt\"></em> <input type=\"submit\" class=\"btn button\" value=\"$value\" name=\"$name\">
+                ";
+            }
     }
   
 ?>    
