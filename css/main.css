@@ -27,7 +27,7 @@ body{
     height: 40;
     border-radius: 5px;
     border: 0;
-    font-size: 18px;
+    font-size: 17px;
     padding-left: 40px;
 }
 .fasi{
@@ -44,13 +44,13 @@ body{
 .btn{
     background-color: #067e38;
     color: #ffffff;
-    font-size: 19px;
+    font-size: 17px;
     border-radius: 5px;
     padding-left: 20px;
 }
 .fa-sign-in-alt{
     position: absolute;
-    padding-left: 15px;
-    padding-top: 20px;
+    padding-left: 10px;
+    padding-top: 18px;
     color: #ffffff;
 }
