@@ -83,7 +83,7 @@ if(isset($_POST['submit'])){
   
   <div class="panel-group col-md-4">
     <div class="panel panel-primary">
-      <div class="panel-heading">Ajouter un sécretaire</div>
+      <div class="panel-heading">AJOUTER UN SECRETAIRE</div>
       <div class="panel-body">
       <form action="" method="post">
         <?php
@@ -122,7 +122,7 @@ if(isset($_POST['submit'])){
   </div>
   <div class="panel-group col-md-8">
     <div class="panel panel-primary">
-      <div class="panel-heading">Ajouter un sécretaire</div>
+      <div class="panel-heading">LISTE DES SECRETAIRES</div>
       <div class="panel-body">
         <!-- la liste des secretaire -->
 
