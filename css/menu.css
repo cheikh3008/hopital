@@ -25,3 +25,6 @@
 .navbar-inverse .navbar-nav > li > a:hover{
     background-color: #21527e;
 }
+table th ,td{
+    text-align: center; 
+ }
