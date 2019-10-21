@@ -19,7 +19,7 @@
              <ul>
                 <li><a class="lien" href="pages/admin/admin.php">Compte Administrateur      </a></li>
                 <li><a class="lien" href="pages/secretaire/secretaire.php">Compte Secretaire</a></li>
-                <li><a class="lien" href="pages/medecin/medecin.php">Compte Medecin         </a></li>
+                <li><a class="lien" href="pages/medecin/medecin.php">Compte <br>Medecin         </a></li>
             </ul>
        </nav>
     </div>
