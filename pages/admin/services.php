@@ -7,7 +7,7 @@ session_start();
       $session = $_SESSION['email'];
     }
     if(isset($_POST['submit'])){
-    $nom_service =$_POST['service'];
+    $nom_service =ucfirst( $_POST['service']);
     $donnees = ['nom_service'=>$nom_service];
     $add = new Requette();
     $req = new ConnexionDB();
@@ -54,9 +54,9 @@ session_start();
               </ul>
             </div>
           </nav>
-<div class="container-fluid">
+<div class="container">
   
-  <div class="panel-group col-md-4">
+  <div class="panel-group col-md-6">
     <div class="panel panel-primary">
       <div class="panel-heading">AJOUTER UN SERVICE</div>
       <div class="panel-body">
@@ -74,7 +74,7 @@ session_start();
  
     </div>
   </div>
-  <div class="panel-group col-md-8">
+  <div class="panel-group col-md-6">
     <div class="panel panel-primary">
       <div class="panel-heading">LISTE DES SERVICES</div>
       <div class="panel-body">
