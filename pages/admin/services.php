@@ -91,6 +91,7 @@ session_start();
               </tr>
             </thead>
             ";
+            if(!empty($res)){
             foreach($res as $val){
                 echo"<tbody>";
                 echo "<tr>
@@ -103,6 +104,9 @@ session_start();
             }
             echo "</tbody>";
             echo "</table>";
+          }else{
+            echo "<p class=\"alert alert-danger \" role=\"alert\"> Le tableau ne contient aucun élément. </p>";
+          }
         ?>
       </div>
  
