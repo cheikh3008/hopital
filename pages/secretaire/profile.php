@@ -126,7 +126,7 @@ session_start();
            </tr>
          </thead>
          ";
-       
+          if(!empty($user)){
          foreach($user as $val){
              echo"<tbody>";
              echo "<tr>
@@ -140,10 +140,13 @@ session_start();
              <td><a class='btn btn-primary'href='editrv.php?id=".$val['id_patient']."'><em class=\"far fa-edit\"></em></a> 
                  <a class='btn btn-danger' href='delrv.php?id=".$val['id_patient']."' onclick=\"return confirm('êtes vous sure de vouloir supprimer cet enrégistrement ?')\";><em class=\"fas fa-trash-alt\"></em></a>
              </td>";
-         }
+          }
+        
          echo "</tbody>";
          echo "</table>";
-       
+        }else{
+          echo "<p class=\"alert alert-danger \" role=\"alert\"> Le tableau ne contient aucun élément. </p>";
+        }
         ?>
       </div>
  
