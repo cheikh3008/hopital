@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/main_index.css"> 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
     
     
     <title>ACCUEIL</title>
@@ -16,11 +17,10 @@
     </div>
     <div class="content">
        <nav>
-             <ul>
-                <li><a class="lien" href="pages/admin/admin.php">Compte Administrateur </a></li>
-                <li><a class="lien" href="pages/secretaire/secretaire.php">Compte Secretaire</a></li>
-                <li><a class="lien" href="pages/medecin/medecin.php">Compte <br>Medecin </a></li>
-            </ul>
+            <a class="lien" href="pages/admin/admin.php"><em class="fas fa-user-cog"></em> <br> Compte Administrateur </a>
+            <a class="lien" href="pages/secretaire/secretaire.php"><em class="fas fa-user-nurse"></em> <br> Compte Secretaire</a>
+            <a class="lien" href="pages/medecin/medecin.php"><em class="fas fa-user-md"></em> <br> Compte Medecin </a>
+        
        </nav>
     </div>
 
