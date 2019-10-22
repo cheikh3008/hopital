@@ -15,18 +15,19 @@ session_start();
         $medecin = $_POST['medecin'];
         $patient = $_POST['patient'];
         if(!empty($dates) && !empty($hdebut) && !empty($hfin) && !empty($horaire) && !empty($secretaire)&& !empty($medecin) && !empty($patient)){
-            $donnees = [ 'dates'=>$dates,'heure_debut'=>$hdebut,'heure_fin'=>$hfin,'id_secretaire'=>$secretaire,'id_horaire'=>$horaire,'id_medecin'=>$medecin,'id_patient'=>$patient ];
-            $add = new Requette();
-            $res = $add->insert($donnees,'rendez_vous');
-            if($res){
-                echo 'ça marche';
-            }else{
-                echo 'impossible';
-            }
+        $donnees = [ 'dates'=>$dates,'heure_debut'=>$hdebut,'heure_fin'=>$hfin,'id_secretaire'=>$secretaire,'id_horaire'=>$horaire,'id_medecin'=>$medecin,'id_patient'=>$patient ];
+        $datenow = new DateTime();
+        if ($datenow <= DateTime::createFromFormat('Y-m-d', $dates)){
+            echo  'ça marche ok';
+        }
+        else{
+            $error_date = "<p class=\"alert alert-danger \" role=\"alert\"> La date est passée. </p>";
+        } 
         }else{
             $error_champ = "<p class=\"alert alert-danger \" role=\"alert\"> Tous les champs doivent être remplis. </p>";
         }
     }
+      
     
 ?>
 
@@ -68,6 +69,7 @@ session_start();
       <div class="panel-body">
         <?php
         if(isset($error_champ)){echo $error_champ;} 
+        if(isset($error_date)){echo $error_date;}   
         ?>
     <form action="" method="post">
         <div class="form-group ">
@@ -80,23 +82,39 @@ session_start();
                 echo $forms->formInput('','hidden','secretaire','',$_GET['id']);
                 $res = $req->selectAll('plage_horaire');
                 $liste_option= "";
+                if(!empty($res)){
                 foreach ($res as $value) {
 
-                    $liste_option .= "<option value=".$value['id_horaire'].">" .$value['id_horaire'].' - '.$value['date']."</option>";
+                        $liste_option .= "<option value=".$value['id_horaire'].">" .$value['id_horaire'].' - '.$value['date']."</option>";
+                    }
+                }else{
+                    echo "<p class=\"alert alert-danger \" role=\"alert\"> La table est vide. </p>";
                 }
                 echo $forms->selectList('Choisissez une horaire','horaire',$liste_option);
-                $res = $req->selectAll('medecin');
+
+                if(isset($_SESSION['id_service'])){
+                    $id_service = $_SESSION['id_service'];
+                }    
+                $res = $req->selectWithCondition('medecin','id_service',$id_service);
                 $liste_option= "";
+                if(!empty($res)){
                 foreach ($res as $value) {
 
                     $liste_option .= "<option value=".$value['id_medecin'].">" .$value['id_medecin'].' - '.$value['prenom'].' - '.$value['nom']."</option>";
                 }
+                }else{
+                    echo "<p class=\"alert alert-danger \" role=\"alert\"> La table est vide. </p>";
+                }
                 echo $forms->selectList('Choisissez un medecin','medecin',$liste_option);
                 $res = $req->selectWithCondition('patient','id_secretaire',$_GET['id']);
                 $liste_option= "";
+                if(!empty($res)){
                 foreach ($res as $value) {
 
                     $liste_option .= "<option value=".$value['id_patient'].">" .$value['id_patient'].' - '.$value['prenom'].' - '.$value['nom']."</option>";
+                }
+                }else{
+                    echo "<p class=\"alert alert-danger \" role=\"alert\"> La table est vide. </p>";
                 }
                 echo $forms->selectList('Choisissez un patient','patient',$liste_option);
             ?>
@@ -108,7 +126,7 @@ session_start();
     </div>
     <div class="panel-group col-md-10">
     <div class="panel panel-primary">
-      <div class="panel-heading">LISTE DES PATIENT</div>
+      <div class="panel-heading">LISTE DES RENDEZ-VOUS</div>
       <div class="panel-body">
        <!-- Liste des medecins -->
        <?php
@@ -136,7 +154,7 @@ session_start();
            </tr>
          </thead>
          ";
-        
+        if(!empty($user)){
          foreach($user as $val){
              echo"<tbody>";
              echo "<tr>
@@ -156,7 +174,9 @@ session_start();
          }
          echo "</tbody>";
          echo "</table>";
-       
+        }else{
+            echo "<p class=\"alert alert-danger \" role=\"alert\"> Le tableau ne contient aucun élément. </p>";
+        }
         ?>
       </div>
  
