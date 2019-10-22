@@ -6,7 +6,7 @@ session_start();
     require_once '../classes/Menu.php';
     if(isset($_SESSION['email'])){
       $session = $_SESSION['email'];
-    }
+    
 
 ?>
 <!DOCTYPE html>
@@ -43,3 +43,8 @@ session_start();
 
 </body>
 </html>
+<?php
+}else{
+  header('location:admin.php');
+}
+?>
