@@ -4,8 +4,19 @@
     require_once '../classes/Formulaire.php';
     if(isset($_GET['id'])){
         $id =$_GET['id'];
-        $forms = new Requette();
-        $result = $forms->selectOne('services','id_service',$id);
+        $req = new Requette();
+        $result = $req->selectOne('services','id_service',$id);
+        if(isset($_POST['service'])){
+            $nom_service = $_POST['service'];
+            $donnees = ['nom_service'=>$nom_service];
+            $res = $req->update($nom_service,'services',$id);
+            if($res){
+                echo 'ça marche ...';
+            }else{
+                echo 'impossible ...';
+            }
+
+        }
         
     }
 ?>
