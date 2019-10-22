@@ -13,7 +13,11 @@ class Requette extends ConnexionDB{
                 
             }
         }
-        return $d;
+        if(empty($d))
+        {return '';}
+        else{
+            return $d;
+        }
     }
 
      /**
@@ -38,6 +42,16 @@ class Requette extends ConnexionDB{
 
 
     /**
+     * Méthode qui permet de mettre à jour les données d'une table.
+     */
+    public function update($fields,$nomtable,$id){
+        $sql = "UPDATE $nomtable SET nom_service='$fields WHERE id= ?";
+        $stmt = $this->prepare($sql);
+        $stmt->execute($id);
+        return  $stmt->execute($id);
+    }
+
+    /**
      * Méthode qui permet de supprimer un champs .
      */
     public function delete($nomtable,$nom_id_table,$id){
@@ -60,6 +74,9 @@ class Requette extends ConnexionDB{
         return $result;
         
     }
+     /**
+     * Méthode qui permet selectionner tous les elements d'un champs par rapport à une condition donnée.
+     */
     public function selectWithCondition($nomtable,$nom_id_table,$id){
         $res = $this->connect()->prepare("SELECT * FROM $nomtable WHERE $nom_id_table  = ? ");
         $res->execute(array($id));
@@ -68,10 +85,16 @@ class Requette extends ConnexionDB{
                 $user []= $ligne;
             }
         }
-        return $user;
+        if(empty($user))
+        {return '';}
+        else{
+            return $user;
+        }
     }
 
-
+     /**
+     * Méthode qui permet selectionner les elements d'un champs par rapport à des conditions données.
+     */
     public function selectAllCondition($table1,$table2,$table3,$cond1,$cond2,$cond3,$id){
         $res = $this->connect()->prepare("SELECT DISTINCT  rendez_vous.num_rv ,patient.prenom,patient.nom,patient.age,patient.adresse,patient.telephone,rendez_vous.dates,rendez_vous.heure_debut,rendez_vous.heure_fin FROM $table1,$table2,$table3 WHERE $cond1 = $cond2 AND $cond3 = ? ");
         $res->execute(array($id));
