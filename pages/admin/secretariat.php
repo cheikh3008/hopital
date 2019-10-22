@@ -143,6 +143,7 @@ if(isset($_POST['submit'])){
           </tr>
         </thead>
         ";
+        if(!empty($res)){
         foreach($res as $val){
             echo"<tbody>";
             echo "<tr>
@@ -158,9 +159,14 @@ if(isset($_POST['submit'])){
                 <a class='btn btn-danger'  href='delsecretaire.php?id=".$val['id_secretaire']."' onclick=\"return confirm('êtes vous sure de vouloir supprimer cet enrégistrement ?')\";><em class=\"fas fa-trash-alt\"></em></a>
             </td>";
         }
-        echo "</tbody>";
-         echo "</table>";
+          echo "</tbody>";
+          echo "</table>";
+        }else{
+          echo "<p class=\"alert alert-danger \" role=\"alert\"> Le tableau ne contient aucun élément. </p>";
+        }
         ?>
+     
+     
       </div>
  
     </div>
