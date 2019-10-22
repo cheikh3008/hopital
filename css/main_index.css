@@ -11,40 +11,37 @@ body{
     background-color: #337ab7;
 }
 nav{
-    width: 980px;
+    width: 990px;
     margin: 0 auto;
 }
-ul{
-    padding: 0;
-    margin: 0;
+
+.fa-user-cog,.fa-user-nurse,.fa-user-md{
+    font-size: 70px;
+    margin-top: -20px;
+    padding-bottom: 10px;
+    color:  #337ab7;
 }
-li{
-    float: left;
-    list-style: none;
-    padding: 25px;
-    margin-top: 15px;
-    margin-right: 13px;
-    border: 1px solid  #337ab7;
-    width: 260px;
-    height: 70px;
-    background-color: #fff;
-    border-radius: 5px;
-    text-align: center;
-    transition: all 1s ease-in-out;
-    cursor: pointer;
-}
+
 a{
+    padding: 25px;
+    margin-right: 15px;
+
+    background-color: #fff;
+    float: left;
+    border-radius: 10px;
     text-decoration: none;
     text-align: center;
-    font-size: 1.6em;
+    font-size: 1.1em;
+   
+    width: 260px;
+    height: 70px;
     color:  #337ab7;
     text-transform: uppercase;
     cursor: pointer;
-    font-weight: 500;
+    font-weight: bold;
+    margin-top: 15px;
 }
-li:hover{
-    background-color: #f4f4f4;
-}
+
 a:hover{
-    color: #2d7bc5;
+   color:  #03115e;
 }
