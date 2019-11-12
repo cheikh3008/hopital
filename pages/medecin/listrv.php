@@ -69,8 +69,7 @@ session_start();
              <th scope=\"col\">Adresse</th>
              <th scope=\"col\">Telephone</th>
              <th scope=\"col\">Date rv</th>
-             <th scope=\"col\">Heure debut</th>
-             <th scope=\"col\">Heure fin</th>
+             <th scope=\"col\">Heure rv</th>
              <th scope=\"col\">Actions</th>
            </tr>
          </thead>
@@ -86,11 +85,10 @@ session_start();
             <td>".$val['adresse']."</td>
             <td>".$val['telephone']."</td>
             <td>".$val['dates']."</td>
-            <td>".$val['heure_debut']."</td>
-            <td>".$val['heure_fin']."</td>";
+            <td>".$val['heure']."</td>";
              echo "
             <td><a class='btn btn-success'href='editrv.php?id=".$val['num_rv']."'><em class=\"fas fa-check-circle\"></em></a> 
-                <a class='btn btn-danger' href='delrv.php?id=".$val['num_rv']."' onclick=\"return confirm('êtes vous sure de vouloir supprimer cet enrégistrement ?')\";><em class=\"fas fa-window-close\"></em></a>
+                <a class='btn btn-danger' href='annulrv.php?id=".$val['num_rv']."' onclick=\"return confirm('êtes vous sure de vouloir annuler cet rendez-vous ?')\";><em class=\"fas fa-window-close\"></em></a>
              </td>";
          }
          echo "</tbody>";
