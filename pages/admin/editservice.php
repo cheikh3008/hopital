@@ -9,9 +9,9 @@
         if(isset($_POST['service'])){
             $nom_service = $_POST['service'];
             $donnees = ['nom_service'=>$nom_service];
-            $res = $req->update($nom_service,'services',$id);
+            $res = $req->update($donnees,$id,'services','id_service');
             if($res){
-                echo 'ça marche ...';
+                header('location:services.php');
             }else{
                 echo 'impossible ...';
             }
