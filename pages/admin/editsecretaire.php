@@ -3,12 +3,43 @@
     require_once '../classes/Requette.php';
     require_once '../classes/Formulaire.php';
     if(isset($_GET['id'])){
-        $id =$_GET['id'];
-        $forms = new Requette();
-        $result = $forms->selectOne('secretaire','id_secretaire',$id);
-       
+      $id =$_GET['id'];
+      $forms = new Requette();
+      $result = $forms->selectOne('secretaire','id_secretaire',$id);
+      if(isset($_POST['submit'])){
+        $prenom = $_POST['prenom'];
+        $nom = $_POST['nom'];
+        $telephone = $_POST['telephone'];
+        $email = $_POST['email'];
+        $mdp = sha1($_POST['mdp']);
+        $service [] = $_POST['services'];
+        if(!empty($prenom) && !empty($nom) && !empty($telephone) && !empty($email) && !empty($mdp) && !empty($service)){
+            if(preg_match('#^(77||78||76||70)[0-9]{7}$#',  $telephone)){
+                if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+                  foreach ($service as $value) {
+                    $value = intval($value);
+                    $donnees = ['prenom'=>$prenom, 'nom'=>$nom, 'telephone'=>$telephone,'email'=>$email, 'mdp'=>$mdp,'id_service'=>$value];
+                    $add = new Requette();
+                    $res =  $add->update($donnees,$id,'secretaire','id_secretaire');
+                    if($res){
+                      header('location:secretariat.php');
+                    }else{
+                        echo 'impossible';
+                    }
+                  } 
     
+                }else{
+                    $errormail = "<p class=\alert alert-danger \ role=\alert\"> Veuillez entrez une adresse email valide. </p>";
+                }
+            }else{
+                $errornumb = "<p class=\"alert alert-danger \" role=\"alert\"> Veuillez entrez un numéro de téléphone valide. </p>";
+            }
+        }else{
+            $errochamp = "<p class=\"alert alert-danger \" role=\"alert\"> Veuillez remplir tous les champs . </p>";
+        }
+        
     }
+    } 
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -55,13 +86,14 @@
                 echo $forms->formInput('Nom ','text','nom','Entrez le nom ',$result['nom']);
                 echo $forms->formInput('Telephone','tel','telephone','Entrez le numero de telephone',$result['telephone']);
                 echo $forms->formInput('Adresse email','email','email','Entrez l\'adresse email',$result['email']);
+                echo $forms->formInput('','hidden','mdp','Entrez le mot de passe',$result['mdp']);
                 $res = $req->selectAll('services');
                 $liste_option= "";
                 foreach ($res as $value) {
 
                     $liste_option .= "<option value=".$value['id_service'].">" .$value['id_service'].' - '.$value['nom_service']."</option>";
                 }
-                echo $forms->selectList('Choisissez un service','service',$liste_option);
+                echo $forms->selectList('Choisissez un service','services',$liste_option);
             ?>
         </div>
 
