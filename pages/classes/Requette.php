@@ -44,12 +44,33 @@ class Requette extends ConnexionDB{
     /**
      * Méthode qui permet de mettre à jour les données d'une table.
      */
-    public function update($fields,$nomtable,$id){
-        $sql = "UPDATE $nomtable SET nom_service='$fields WHERE id= ?";
-        $stmt = $this->prepare($sql);
-        $stmt->execute($id);
-        return  $stmt->execute($id);
+   
+    public function update($fields,$idserv,$nomtable,$nom_id_table){
+        $st = "";
+        $cpt = 1;
+        $total_fields = count($fields);
+        foreach($fields as $key => $value){
+            if($cpt  === $total_fields){
+                $set = "$key = :".$key;
+                $st = $st.$set;
+            }else{
+                $set = "$key = :".$key.", ";
+                $st = $st.$set;
+                $cpt ++;
+            }
+        }       
+
+    $sql = "";
+    $sql.= "UPDATE $nomtable SET ".$st;
+    $sql.= " WHERE $nom_id_table = ".$idserv;
+    $req = $this->connect()->prepare($sql);
+    foreach($fields as $key => $value){
+        $req->bindValue(':'.$key, $value);
     }
+    $totalExeceute = $req->execute();
+    return $totalExeceute;
+}
+
 
     /**
      * Méthode qui permet de supprimer un champs .
@@ -96,7 +117,7 @@ class Requette extends ConnexionDB{
      * Méthode qui permet selectionner les elements d'un champs par rapport à des conditions données.
      */
     public function selectAllCondition($table1,$table2,$table3,$cond1,$cond2,$cond3,$id){
-        $res = $this->connect()->prepare("SELECT DISTINCT  rendez_vous.num_rv ,patient.prenom,patient.nom,patient.age,patient.adresse,patient.telephone,rendez_vous.dates,rendez_vous.heure_debut,rendez_vous.heure_fin FROM $table1,$table2,$table3 WHERE $cond1 = $cond2 AND $cond3 = ? ");
+        $res = $this->connect()->prepare("SELECT DISTINCT  rendez_vous.num_rv ,patient.prenom,patient.nom,patient.age,patient.adresse,patient.telephone,rendez_vous.dates,rendez_vous.heure FROM $table1,$table2,$table3 WHERE $cond1 = $cond2 AND $cond3 = ? ");
         $res->execute(array($id));
         if($res->rowCount() > 0){
             while($ligne  = $res->fetch()){
