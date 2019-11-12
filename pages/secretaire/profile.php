@@ -137,8 +137,8 @@ session_start();
              <td>".$val['adresse']."</td>
              <td>".$val['telephone']."</td>";
              echo "
-             <td><a class='btn btn-primary'href='editrv.php?id=".$val['id_patient']."'><em class=\"far fa-edit\"></em></a> 
-                 <a class='btn btn-danger' href='delrv.php?id=".$val['id_patient']."' onclick=\"return confirm('êtes vous sure de vouloir supprimer cet enrégistrement ?')\";><em class=\"fas fa-trash-alt\"></em></a>
+             <td><a class='btn btn-primary'href='editpatient.php?id=".$val['id_patient']."'><em class=\"far fa-edit\"></em></a> 
+                 <a class='btn btn-danger' href='delpatient.php?id=".$val['id_patient']."' onclick=\"return confirm('êtes vous sure de vouloir supprimer cet enrégistrement ?')\";><em class=\"fas fa-trash-alt\"></em></a>
              </td>";
           }
         
