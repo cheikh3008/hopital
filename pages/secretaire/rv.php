@@ -8,17 +8,63 @@ session_start();
     }
     if(isset($_POST['submit'])){
         $dates = $_POST['dates'];
-        $hdebut = $_POST['hdebut'];
-        $hfin = $_POST['hfin'];
+        $heure = $_POST['heure'];
         $secretaire = $_POST['secretaire'];
-        $horaire = $_POST['horaire'];
-        $medecin = $_POST['medecin'];
-        $patient = $_POST['patient'];
-        if(!empty($dates) && !empty($hdebut) && !empty($hfin) && !empty($horaire) && !empty($secretaire)&& !empty($medecin) && !empty($patient)){
-        $donnees = [ 'dates'=>$dates,'heure_debut'=>$hdebut,'heure_fin'=>$hfin,'id_secretaire'=>$secretaire,'id_horaire'=>$horaire,'id_medecin'=>$medecin,'id_patient'=>$patient ];
+        $horaire[] = $_POST['horaire'];
+        $medecin[] = $_POST['medecin'];
+        $patient[] = $_POST['patient'];
+        if(!empty($dates) && !empty($heure)  && !empty($horaire) && !empty($secretaire)&& !empty($medecin) && !empty($patient)){
+        $donnees = [ 'dates'=>$dates,'heure'=>$heure,'id_secretaire'=>$secretaire,'id_horaire'=>$horaire,'id_medecin'=>$medecin,'id_patient'=>$patient ];
         $datenow = new DateTime();
-        if ($datenow <= DateTime::createFromFormat('Y-m-d', $dates)){
-            echo  'ça marche ok';
+        $req = new ConnexionDB();
+       
+        if ($datenow <= DateTime::createFromFormat('Y-m-d', $dates) ){
+            if(isset($_SESSION['id_secretaire'])){
+                $id_secretaire = $_SESSION['id_secretaire'];
+            }
+            $nbheure  = $req->connect()->prepare("SELECT COUNT(dates) as dates ,  COUNT(heure) as heure  FROM `rendez_vous` WHERE dates = :dates AND heure = :heure AND id_secretaire = $id_secretaire" );
+                $nbheure->execute(array('heure'=>$heure,'dates'=>$dates));
+                while($heure_verify = $nbheure->fetch()){
+                    if($heure_verify['heure'] == 0 && $heure_verify['dates'] == 0){
+                        $weekDay = date('w', strtotime($dates));
+                        if($weekDay != 0 && $weekDay != 6) {
+                            if(preg_match('/^([0-9]){1,2}+:([0-9]){1,2}+$/', $heure)){
+                                $explode= explode(":", $heure);
+                                $heures= $explode[0];
+                                $minute= $explode[1];
+                                if($heures >=8 && $heures <=17){
+                                foreach ($horaire as $horaire) {
+                                    $horaire = intval($horaire);
+                                    
+                                }
+                                foreach ($medecin as $medecin) {
+                                    $medecin = intval($medecin);
+                                }
+                                foreach ($patient as $patient) {
+                                    $patient = intval($patient);
+                                }
+                                $donnees = ['dates'=>$dates,'heure'=>$heure,'id_secretaire'=>$secretaire,'id_horaire'=>$horaire, 'id_medecin'=>$medecin,'id_patient'=>$patient];
+                                $add = new Requette();
+                                $res =  $add->insert($donnees,'rendez_vous');
+                                if($res){
+                                   header('location:rv.php?id='.$_SESSION['id_secretaire']);
+                                }else{
+                                    echo 'impossible';
+                                }
+                                    
+                                }else{
+                                    $errorheure_int = "<p class=\"alert alert-danger \" role=\"alert\">Impossible de réserver pour cette heure. </p>"; 
+                                }
+                            }else{
+                                $errorheure = "<p class=\"alert alert-danger \" role=\"alert\"> L'heure n\'est pas valide. </p>"; 
+                            }
+                        }else{
+                            $errorweek = "<p class=\"alert alert-danger \" role=\"alert\"> Impossible de réserver les week_end. </p>"; 
+                        }
+                }else{
+                    $errorheure_reserv = "<p class=\"alert alert-danger \" role=\"alert\"> Cette heure est déja réservée. </p>";
+                }
+            }
         }
         else{
             $error_date = "<p class=\"alert alert-danger \" role=\"alert\"> La date est passée. </p>";
@@ -69,7 +115,10 @@ session_start();
       <div class="panel-body">
         <?php
         if(isset($error_champ)){echo $error_champ;} 
-        if(isset($error_date)){echo $error_date;}   
+        if(isset($error_date)){echo $error_date;}  
+        if(isset($errorheure_reserv)){echo $errorheure_reserv;} 
+        if(isset($errorweek)){echo $errorweek;}    
+        if(isset($errorheure_int)){echo $errorheure_int;}   
         ?>
     <form action="" method="post">
         <div class="form-group ">
@@ -77,18 +126,17 @@ session_start();
                 $forms = new Formulaire();
                 $req = new Requette();
                 echo $forms->formInput('Date','date','dates','Entrez la date');
-                echo $forms->formInput('Heure début ','time','hdebut','');
-                echo $forms->formInput('Heure fin ','time','hfin','');
+                echo $forms->formInput('Heure  ','time','heure','');
                 echo $forms->formInput('','hidden','secretaire','',$_GET['id']);
                 $res = $req->selectAll('plage_horaire');
                 $liste_option= "";
                 if(!empty($res)){
                 foreach ($res as $value) {
 
-                        $liste_option .= "<option value=".$value['id_horaire'].">" .$value['id_horaire'].' - '.$value['date']."</option>";
+                        $liste_option .= "<option value=".$value['id_horaire']."> ".$value['dates']."</option>";
                     }
                 }else{
-                    echo "<p class=\"alert alert-danger \" role=\"alert\"> La table est vide. </p>";
+                    echo "<p class=\"alert alert-danger \" role=\"alert\"> La table est vide    . </p>";
                 }
                 echo $forms->selectList('Choisissez une horaire','horaire',$liste_option);
 
@@ -148,8 +196,7 @@ session_start();
              <th scope=\"col\">Adresse</th>
              <th scope=\"col\">Telephone</th>
              <th scope=\"col\">Date rv</th>
-             <th scope=\"col\">Heure debut</th>
-             <th scope=\"col\">Heure fin</th>
+             <th scope=\"col\">Heure rv</th>
              <th scope=\"col\">Actions</th>
            </tr>
          </thead>
@@ -165,8 +212,7 @@ session_start();
             <td>".$val['adresse']."</td>
             <td>".$val['telephone']."</td>
             <td>".$val['dates']."</td>
-            <td>".$val['heure_debut']."</td>
-            <td>".$val['heure_fin']."</td>";
+            <td>".$val['heure']."</td>";
              echo "
             <td><a class='btn btn-primary'href='editrv.php?id=".$val['num_rv']."'><em class=\"far fa-edit\"></em></a> 
                  <a class='btn btn-danger' href='delrv.php?id=".$val['num_rv']."' onclick=\"return confirm('êtes vous sure de vouloir supprimer cet enrégistrement ?')\";><em class=\"fas fa-trash-alt\"></em></a>
