@@ -4,8 +4,8 @@ body{
     padding: 0;
     margin: 0;
     background-color: rgb(255, 255, 255);
-    background: url(../img/slider-image1.jpg) no-repeat center center fixed;
-    background-size : cover;
+    /* background: url(../img/slider-image1.jpg) no-repeat center center fixed;
+    background-size : cover; */
     
     
 }
@@ -41,4 +41,40 @@ body{
 .navbar-inverse .navbar-nav > li > a:hover{
     background-color: #21527e;
 }
+.bloc_card{
+    width: 80%;
+    margin: 0 auto;
+    margin-top: -20px;
+}
+.new1{
+    float: left;
+    width: 30%;
+    padding: 0px;
+    margin: 1.1em;
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    
+}
+.new1>img{
+    width: 326px;
+    padding: 0;
+    margin: 0;
 
+}
+.new1>h1{
+    font-size: 2em;
+    padding: 0px 15px;
+    color: #000000;
+}
+.new1>p{
+    font-size: 1.1em;
+    padding: 0px 15px;
+    color: #000000;
+    text-align: justify;
+}
+.new1>h3{
+    font-size: 1.1em;
+    padding: 0px 15px;
+    font-weight: bold;
+    color: #000000; 
+}
