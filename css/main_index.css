@@ -22,7 +22,7 @@ nav{
     color:  #337ab7;
 }
 
-a{
+.lien{
     padding: 25px;
     margin-right: 15px;
 
@@ -42,6 +42,6 @@ a{
     margin-top: 15px;
 }
 
-a:hover{
+.lien:hover{
    color:  #03115e;
 }
